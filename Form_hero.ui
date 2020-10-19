@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form_hero</class>
+ <widget class="QWidget" name="Form_hero">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>811</width>
+    <height>695</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QTableView
+{
+	font:13px &quot;微软雅黑&quot;;
+	color: rgb(255, 255, 255);
+	border: None;
+	background: rgba(22,26,32, 200)   
+
+
+}
+QLabel{
+font:13px &quot;微软雅黑&quot;;
+color: rgb(255, 255, 255);
+}
+QGroupBox
+{
+	font:13px &quot;微软雅黑&quot;;
+	color: rgb(255, 255, 255);
+	border: None;
+	background: rgba(22,26,32, 200)   
+
+
+}
+QLineEdit
+{
+background:none;
+}
+QTableView::pane
+{
+	font:13px &quot;微软雅黑&quot;;
+	color: rgb(255, 255, 255);
+	border: None;
+	
+}
+QScrollBar{
+	background-color:rgb(0, 0, 0);
+	width:10px;
+}
+QScrollBar::handle{
+ 	image: url(data/Center.png)  ; 
+ 	border:none; 
+ 	border-radius:5px;
+} 
+QScrollBar::handle:hover{image: url(data/Center.png)  ; }
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{background:none;}
+QToolTip{
+border: 2px solid qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 0, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));   
+	background-color: rgb(22,26,32);
+	ridge:ridge;
+	padding: 4px;
+	border-radius:10px;
+}
+QPushButton{
+	color: qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 0, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));
+	border: 2px solid qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 0, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));   
+	background-color: rgb(22,26,32);
+	ridge:ridge;
+	padding: 4px;
+	border-radius:10px;
+	
+	font: 75 14pt &quot;微软雅黑&quot;;
+}
+QPushButton:hover {
+	color: rgb(255, 255, 255);
+	border: 2px solid qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, stop:0 rgba(0, 0, 0, 255), stop:0.19397 rgba(0, 0, 0, 255), stop:0.202312 rgba(122, 97, 0, 255), stop:0.495514 rgba(76, 58, 0, 255), stop:0.504819 rgba(255, 255, 255, 255), stop:0.79 rgba(255, 255, 255, 255), stop:1 rgba(255, 158, 158, 255));   
+}
+QGroupBox{
+	color:rgb(255, 255, 255);
+	font: 75 11pt &quot;微软雅黑&quot;;
+}
+
+QRadioButton{
+color:rgb(182, 182, 182);
+font: 75 10pt &quot;微软雅黑&quot;;
+}
+QLineEdit{
+color: rgb(255, 85, 0);
+font: 75 12pt &quot;微软雅黑&quot;;
+with:200px;
+}
+
+
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBox_price">
+     <property name="title">
+      <string>费用:</string>
+     </property>
+     <layout class="QHBoxLayout" name="hbox_price"/>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_job">
+     <property name="title">
+      <string>职业:</string>
+     </property>
+     <layout class="QHBoxLayout" name="hbox_job">
+      <property name="spacing">
+       <number>6</number>
+      </property>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_race">
+     <property name="title">
+      <string>羁绊:</string>
+     </property>
+     <layout class="QHBoxLayout" name="hbox_race"/>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tabHero"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>zdlistForm</class>
+ <widget class="QWidget" name="zdlistForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>212</width>
+    <height>261</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+#tabZDlist::pane{    
+    border: none;
+}
+#tabZDlist{  
+	border: none;
+    background: transparent;    
+}
+QToolTip{
+border: 2px solid qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 0, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));   
+	background-color: rgb(22,26,32);
+	ridge:ridge;
+	padding: 4px;
+	border-radius:10px;
+}
+ 
+
+QCheckBox::indicator:unchecked
+{
+image:url(data/img/SrvSta3.png);
+}
+QCheckBox::indicator:checked
+{
+image:url(data/img/SrvSta1.png);
+}
+</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QTableWidget" name="tabZDlist">
+     <column>
+      <property name="text">
+       <string>英雄名</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>自动</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

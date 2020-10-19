@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SquadFrom</class>
+ <widget class="QWidget" name="SquadFrom">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>855</width>
+    <height>280</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QTableView
+{
+	font:13px &quot;微软雅黑&quot;;
+	color: rgb(255, 255, 255);
+	border: None;
+	background: rgba(22,26,32, 200)   
+
+
+}
+QTableView::pane
+{
+	font:13px &quot;微软雅黑&quot;;
+	color: rgb(255, 255, 255);
+	border: None;
+	
+}
+QScrollBar{
+	background-color:rgb(0, 0, 0);
+	width:10px;
+}
+QScrollBar::handle{
+ 	image: url(data/img/Center.png)  ; 
+ 	border:none; 
+ 	border-radius:5px;
+} 
+QScrollBar::handle:hover{image: url(data/img/Center.png)  ; }
+QScrollBar::add-page:vertical,QScrollBar::sub-page:vertical{background:none;}
+QToolTip{
+border: 2px solid qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 0, 69), stop:0.375 rgba(255, 255, 0, 69), stop:0.423533 rgba(251, 255, 0, 145), stop:0.45 rgba(247, 255, 0, 208), stop:0.477581 rgba(255, 244, 71, 130), stop:0.518717 rgba(255, 218, 71, 130), stop:0.55 rgba(255, 255, 0, 255), stop:0.57754 rgba(255, 203, 0, 130), stop:0.625 rgba(255, 255, 0, 69), stop:1 rgba(255, 255, 0, 69));   
+	background-color: rgb(22,26,32);
+	ridge:ridge;
+	padding: 4px;
+	border-radius:10px;
+}
+ </string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTableWidget" name="tabZhengR">
+     <column>
+      <property name="text">
+       <string>阵容名称</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>强度</string>
+      </property>
+      <property name="font">
+       <font>
+        <kerning>true</kerning>
+       </font>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员1</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员2</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员3</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员4</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员5</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员6</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员7</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员8</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>成员9</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
