@@ -148,7 +148,7 @@ class AutoOPlayingChess():
         :param sim:相似度,取值范围0.1-1.0
         :return:如果返回False说明绑定失败.运行失败!
         '''
-
+        path = os.getcwd()
         while True:  # 主循环,用来判断游戏开始和结束然后重新绑定窗口的
             print('正在寻找游戏,等待开始!')
             self.checkHwnd()
@@ -194,10 +194,13 @@ class AutoOPlayingChess():
                             # 判断是否有暂时不买的棋子
                             if s[0] in self.chess_bn:
                                 break
-                            x = int(s[1]) + 40
-                            y = int(s[2]) - 30
-                            a, b, c = self.dm.FindPic(x - 70, y - 130, x-40, y-30,
-                                                      r'data\img\tx.bmp',
+                            x2 = int(s[1])
+                            y2 = int(s[2])
+                            x = x2  + 40
+                            y = y2  - 30
+
+                            a, b, c = self.dm.FindPic(x2-20, y2 -100, x2+10, y2,
+                                                      path+r'\data\img\tx.bmp',
                                                       '050505', 0.60, 0)
                             if a != -1:
                                 print('发现天选英雄:', s[0], '坐标:', x, y, '处理方式:用户自拿')

@@ -222,14 +222,18 @@ def double_click_Hero_remove(index):
 def double_click_Hero_Add(index):
     '''双击增加一个自动列表的棋子'''
     global atpc,heroItems
-    i=index.column()+(index.row()*4)
-    if heroItems[i]['displayName'] not in atpc.chess:
+    try:
+        i = index.column() + (index.row() * 4)
+        if heroItems[i]['displayName'] not in atpc.chess:
+            column = zdlistUI.tabZDlist.columnCount() + 1
+            zdlistUI.tabZDlist.setColumnCount(column)
+            zidong_kuanjia(heroItems[i], zdlistUI.tabZDlist.columnCount() - 1)  # 加入一个数据
+            atpc.chessAdd(heroItems[i]['displayName'])  # 加入
+            print('目前的自动列表:', atpc.chess)
 
-        column=zdlistUI.tabZDlist.columnCount()+1
-        zdlistUI.tabZDlist.setColumnCount(column)
-        zidong_kuanjia(heroItems[i],zdlistUI.tabZDlist.columnCount()-1)#加入一个数据
-        atpc.chessAdd(heroItems[i]['displayName'])  # 加入
-        print('目前的自动列表:',atpc.chess)
+    except:
+        pass
+
 def keyReleaseEvent_zd(event):
     if event.key()==16777223:
         #当前选中列
