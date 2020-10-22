@@ -1,6 +1,6 @@
 ＃tft_zynpzy
 云顶官方接口：https：/////lol.qq.com/tft/js/api.js
-自用拿牌神器，成品和原码下载地址:https://www.lanzoui.com/iyUHxhkkmqf
+自用拿牌神器，成品和原码下载地址:https://www.lanzoui.com/i71kGhmwb0h
 免责声明
 一. 本源码/软件完全出于个人兴趣爱好，由本人在业余时间编写的
 
