@@ -36,7 +36,10 @@ class ZhuangGeiFX(QDialog):
         txData =None
         for item in self.data['hero_location']:
             # 将羁绊和职业数据存进容器
-            chessData = chessId_get_data(self.chess, item['hero_id'])
+            try:
+                chessData = chessId_get_data(self.chess, item['hero_id'])
+            except:
+                continue
             for job_item in chessData['jobIds'].split(','):
                 job_list.append(job_item)
             for race_item in chessData['raceIds'].split(','):

@@ -19,8 +19,11 @@ def updataAutoChess():
         for item in hero_location:
             #print(item)
             #获取棋子名称
-            chessDATA= chessId_get_data(chess,item['hero_id'])
-            chessList.append(chessDATA['displayName'])
+            try:
+                chessDATA= chessId_get_data(chess,item['hero_id'])
+                chessList.append(chessDATA['displayName'])
+            except:
+                pass
         if len(chess)>0:
             # 将需要购买的棋子放入池子中
             atpc.chess=chessList
@@ -366,8 +369,14 @@ def loadingList():
 
         hero_location=strategy['hero_location']
         level_3_heros=strategy['level_3_heros']
+        k=0
         for j,heroitem in enumerate(hero_location):
-            chessData = chessId_get_data(chess, heroitem['hero_id'])
+            try:
+                chessData = chessId_get_data(chess, heroitem['hero_id'])
+            except:
+                #错误偏移
+                k+=1
+                continue
             tpgFrame= QFrame()
             #天选英雄
             if 'isChosenHero' in heroitem:
@@ -432,7 +441,7 @@ def loadingList():
             #控件间距
             vbox.setSpacing(1)
             tpgFrame.setLayout(vbox)
-            squadListUI.tabZhengR.setCellWidget(i, 2 + j, tpgFrame)
+            squadListUI.tabZhengR.setCellWidget(i, 2 + j-k, tpgFrame)
 
     # 行列大小根据内容调整大小
 
@@ -973,7 +982,7 @@ if __name__=='__main__':
     strategyS = []
 
     ver_info = '0001'  # 附加信息,主要用于查询消费情况 填了更好查询,不填也无所谓
-    dictPath = '1920.txt'  # 字库路径
+    dictPath = r'1920.txt'  # 字库路径
     processName = 'League of Legends.exe'  # 进程名
     #-------------------界面----------------------------------------------------
     # 创建一个QApplication类的实例 可以看做是屏幕 要有屏幕对象,才能开始画窗口

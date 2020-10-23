@@ -18,6 +18,7 @@ def regDM():
     except:
         os.system(F'regsvr32 {path}/dm.dll')
         dm = Dispatch('dm.dmsoft')
+    print(dm.Ver())
     return dm
 
 
@@ -61,8 +62,12 @@ class AutoOPlayingChess():
         :param errorMsg: 默认为关闭错误提示,如果要设置请填1
         :return:0失败,1成功!
         '''
-
+        self.dm.SetPath(os.getcwd())
         self.dm.SetShowErrorMsg(errorMsg)
+        # 鼠标消息采用同步发送模式
+        self.dm.EnableMouseSync(1, 200)
+        #点击间隔设置
+        self.dm.SetMouseDelay("dx", 60)
         return self.dm.SetDict(0, path)
 
     def checkHwnd(self, processName='League of Legends.exe'):
@@ -148,17 +153,13 @@ class AutoOPlayingChess():
         :param sim:相似度,取值范围0.1-1.0
         :return:如果返回False说明绑定失败.运行失败!
         '''
-        path = os.getcwd()
+
         while True:  # 主循环,用来判断游戏开始和结束然后重新绑定窗口的
             print('正在寻找游戏,等待开始!')
             self.checkHwnd()
             for s in range(5):  # 尝试五次
                 dm_ret = self.dm.BindWindowEx(self.hwnd, "dx2", "dx.mouse.position.lock.api|dx.mouse.api", "normal",
                                               "dx.public.active.api", 0)
-                # dm_ret = self.dm.BindWindow(self.hwnd, "dx2", 'normal', "normal",0)
-                # 鼠标消息采用同步发送模式
-                # self.dm.EnableMouseSync(1, 200)
-                self.dm.SetMouseDelay("dx", 60)
                 if dm_ret == 1:
                     print('绑定成功!', self.hwnd)
                     print('---仅支持1920*1080分辨率,并且游戏要设置无边框模式---')
@@ -178,10 +179,10 @@ class AutoOPlayingChess():
             # 用来存上一次的结果
             last_sls = []
             # 循环,直到窗口不见了
+            bn_num=0
             while self.hwnd != 0:
-                time.sleep(0.2)
+                time.sleep(0.25)
                 if len(self.chess) > 0:  # 判断自动购买棋子池是否有需要购买的棋子,有需要才有必要运行下面的代码
-                    # 判断用户是否有在按d键,按了之后就启动一次,直到帮忙拿了一轮牌之后(一次商店的牌)
                     # 返回的是5个当前商店棋子名以及坐标
                     sls = self.dm.OcrEx(starX, lScreenHeight, ScreenWidth, ScreenHeight, color_format, sim).split('|')
                     if sls == last_sls or sls == '':
@@ -194,13 +195,14 @@ class AutoOPlayingChess():
                             # 判断是否有暂时不买的棋子
                             if s[0] in self.chess_bn:
                                 break
+                            bn_num+=1
                             x2 = int(s[1])
                             y2 = int(s[2])
                             x = x2  + 40
                             y = y2  - 30
 
                             a, b, c = self.dm.FindPic(x2-20, y2 -100, x2+10, y2,
-                                                      path+r'\data\img\tx.bmp',
+                                                      r'\data\img\tx.bmp',
                                                       '050505', 0.60, 0)
                             if a != -1:
                                 print('发现天选英雄:', s[0], '坐标:', x, y, '处理方式:用户自拿')
@@ -210,6 +212,7 @@ class AutoOPlayingChess():
                             self.dm.LockInput(1)
                             self.dm.MoveTo(x, y)
                             self.dm.LeftClick()
+                            self.dm.LockInput(0)
                             print('发现了', s[0], '坐标:', x, y)
                             time.sleep(0.2)
                             last_sls = self.dm.OcrEx(starX,
@@ -218,7 +221,7 @@ class AutoOPlayingChess():
                                                      ScreenHeight,
                                                      color_format,
                                                      sim).split('|')
-                            self.dm.LockInput(0)
+
             self.dm.LockInput(0)
             self.dm.UnBindWindow()
-            print('游戏结束或者退出了!')
+            print('游戏结束或者退出了!这局总计帮拿了:',bn_num,'个英雄')

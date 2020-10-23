@@ -113,8 +113,9 @@ class TFT():#云顶攻略类
             d['line_id']=j[str(i)]["line_id"]#ID
             d['extend'] = j[str(i)]["extend"]  # 是否上架
             d['line_name']=TFT.get_lineName(self,i)#标题
-            #排除删除的卡组 if d['sortID'] != '' and d['extend'] =='1':
-            linelist.append(d)  # 存起来
+            #排除删除的卡组
+            if d['sortID'] != '' and d['extend'] =='1':
+                linelist.append(d)  # 存起来
         return TFT.maopao(self,linelist)
     def get_chess(self):#f获取所以棋子的资料，返回一个列表
         res=requests.get("https://game.gtimg.cn/images/lol/act/img/tft/js/10.19-2020.S4/chess.js",headers=self.headers)

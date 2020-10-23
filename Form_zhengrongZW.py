@@ -39,7 +39,11 @@ class ZhengRongZW(QDialog):
                 for item in hero_location:
                     pos=item['location'].split(',')
                     if int(pos[0])-1==i and int(pos[1])-1==j:
-                        chessData=chessId_get_data(self.chess,item['hero_id'])
+                        try:
+
+                            chessData=chessId_get_data(self.chess,item['hero_id'])
+                        except:
+                            continue
                         zw.setToolTip(tanChudataForm(chessData, self.job, self.race))
                         zwpath=Path_chess+chessData['name']
                         if chessData["price"] == '1':
