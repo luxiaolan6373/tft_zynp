@@ -80,7 +80,6 @@ class ZhuangGeiFX(QDialog):
 
                     djzb=equipId_get_data(self.equip,equi)
                     # 将羁绊和职业数据存进容器
-                    print(djzb)
                     try:
 
                         if djzb['jobId']!='0' and djzb['jobId']!=None:
@@ -208,7 +207,7 @@ class ZhuangGeiFX(QDialog):
                 test_race = race_get_background_sf(self.race, ss, num, False)
             if test_race!=None:
                 # 将每一个小组件渲染
-                print(test_race)
+
                 tp_hbox = QHBoxLayout()
                 # 羁绊背景
                 tp_jb_bj = QLabel()

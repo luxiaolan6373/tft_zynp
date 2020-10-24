@@ -975,8 +975,6 @@ if __name__=='__main__':
     tft = TFT()
     chess = tft.get_chess()  # 获取所有的棋子数据 返回一个列表
     equip = tft.get_equip()  # 获取所有的装备数据 返回一个列表
-    for item in equip:
-        print(item)
     job = tft.get_job()  # 获取所有的职业数据 返回一个列表
     race = tft.get_race()  # 获取所有的羁绊数据 返回一个列表
     downSJ()  # 下载所有数据
