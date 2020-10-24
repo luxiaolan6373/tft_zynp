@@ -179,6 +179,7 @@ class TFT():#云顶攻略类
                 d['imagePath'] = i['imagePath']#图标地址
                 d['TFTID'] = i['TFTID']
                 d['jobId'] = i['jobId']#职业 如果是有转职功能的,就会有职业不为0
+                d['raceId'] = i['raceId']  # 职业 如果是有转职功能的,就会有职业不为0
                 equip.append(d)
         return equip
     def get_job(self):#获取所有的职业 返回一个列表

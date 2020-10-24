@@ -80,16 +80,20 @@ class ZhuangGeiFX(QDialog):
 
                     djzb=equipId_get_data(self.equip,equi)
                     # 将羁绊和职业数据存进容器
+                    print(djzb)
                     try:
+
                         if djzb['jobId']!='0' and djzb['jobId']!=None:
                             job_list.append(djzb['jobId'])
                     except:
                         pass
                     try:
+
                         if djzb['raceId'] != '0' and djzb['raceId']!=None:
                             race_list.append(djzb['raceId'])
                     except:
                         pass
+
 
 
                     zbpath = Path_equip+djzb['imagePath'].split('/')[-1]
