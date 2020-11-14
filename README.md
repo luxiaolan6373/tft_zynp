@@ -1,3 +1,5 @@
+大漠注册码需要自己注册了,我的没钱了
+http://download.dmplugin.net:8088/login.asp
 ＃tft_zynpzy
 云顶官方接口：https：/////lol.qq.com/tft/js/api.js
 免责声明
