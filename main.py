@@ -955,7 +955,6 @@ def showZhuangBeiFX(kg=False):
             zbfxFrom.move(app.desktop().screenGeometry().width() - zbfxFrom.geometry().width(),
                           straForm.geometry().height())
 if __name__=='__main__':
-
     #数据初始化和获取--------------------------
     dangqianData=''#当前阵容数据全局占位
     spjzFrom = ''#搜牌节奏窗口全局占位
@@ -1055,14 +1054,13 @@ if __name__=='__main__':
         t.start()
         # 进入程序主循环,并通过exit函数确保主循环安全结束
 
-        sys.exit(app.exec_())
+
     else:
         if value == -2:
-            QMessageBox.warning(mainWindow, "警告!", '进程没有以管理员方式运行或者被第三方杀毒拦截. (建议关闭uac和杀毒软件),请用管理员权限运行本程序!')
-
+            QMessageBox.warning(mainWindow, "警告!", '进程没有以管理员方式运行或者被第三方杀毒拦截. \n也有可能是大漠注册码错误或者没钱了\n(不影响使用,但是不会自动拿牌)')
         else:
-            QMessageBox.warning(mainWindow,  "警告!", f'验证失败,失败代码为:{value},大概率是被杀毒拦截了!')
-        app.quit()
+            QMessageBox.warning(mainWindow,  "警告!", f'验证失败,失败代码为:{value}!')
+    sys.exit(app.exec_())
         
 
 
