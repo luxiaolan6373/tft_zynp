@@ -93,29 +93,26 @@ class TFT():#云顶攻略类
 
         return strategy
     def get_lineName(self,setID):#获取卡组标题列表
-        res = requests.get("https://lol.qq.com/act/AutoCMS/publish/LOLAct/TFTLineup_set4/TFTLineup_set4_"+setID+".js",headers=self.headers)
+
+        res = requests.get(f"https://game.gtimg.cn/images/lol/act/tftzlkauto/json/lineupJson/s4/6/{setID}.json",headers=self.headers)
+        print(f"https://game.gtimg.cn/images/lol/act/tftzlkauto/json/lineupJson/s4/6/{setID}.json")
         text = take_middle_text(res.text,"{return ",";});/")
         j = json.loads(text)
         return j['line_name']
     def get_linelist(self):#返回最新卡组列表
-        res =requests.get("https://lol.qq.com/act/AutoCMS/publish/LOLAct/TFTlinelist_set4/TFTlinelist_set4.js", headers=self.headers)
-        text=take_middle_text(res.text,"{return",";});/*")
-        j=json.loads(text)
+        res =requests.get("https://game.gtimg.cn/images/lol/act/tftzlkauto/json/lineupJson/s4/6/lineup_detail_total.json",
+                          headers=self.headers)
+        j=json.loads(res.text)['lineup_list']
         linelist =[]
         for i in j:
             #创建一个字典
-            d=dict.fromkeys(('season', 'edition', 'quality', 'pub_time', "sortID", 'line_id', 'line_name'))
-            d['season'] = j[str(i)]["season"]  # 赛季
-            d['edition']=j[str(i)]["edition"]#版本号
-            d['quality']= j[str(i)]["quality"]  # 评级
-            d['pub_time']= j[str(i)]["pub_time"]  # 日期
-            d['sortID']= j[str(i)]["sortID"]  # 排序位置
-            d['line_id']=j[str(i)]["line_id"]#ID
-            d['extend'] = j[str(i)]["extend"]  # 是否上架
-            d['line_name']=TFT.get_lineName(self,i)#标题
-            #排除删除的卡组
-            if d['sortID'] != '' and d['extend'] =='1':
-                linelist.append(d)  # 存起来
+            d={}
+            d['quality']= i["quality"]  # 评级
+            d['sub_time']= i["sub_time"]  # 日期
+            d['sortID']= i["sortID"]  # 排序位置
+            d['id']=i["id"]#ID
+            d['line_name']=TFT.get_lineName(self,d['id'])#标题
+            linelist.append(d)  # 存起来
         return TFT.maopao(self,linelist)
     def get_chess(self):#f获取所以棋子的资料，返回一个列表
         res=requests.get("https://game.gtimg.cn/images/lol/act/img/tft/js/10.19-2020.S4/chess.js",headers=self.headers)
