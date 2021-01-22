@@ -340,12 +340,11 @@ def loadingList():
     载入官方列表
     :return:
     '''
-    squadListUI.tabZhengR.setRowCount(len(line_list))
+    squadListUI.tabZhengR.setRowCount(len(tft.dataList))
     squadListUI.tabZhengR.setColumnCount(11)
 
-    for i,item in enumerate(line_list):
-
-        strategy = tft.get_strategy(item['line_id'])
+    for i,item in enumerate(tft.dataList):
+        strategy =tft.get_strategy(i)
         strategyS.append(strategy)
         # 设置阵容强度
         tphot = QLabel()
@@ -363,14 +362,19 @@ def loadingList():
         tphot.setAlignment(Qt.AlignCenter)
         squadListUI.tabZhengR.setCellWidget(i, 0, tphot)
         # 设置阵容名
-        tabItem = QTableWidgetItem(item['line_name'])
+        tabItem = QTableWidgetItem(strategyS[i]['line_name'])
         squadListUI.tabZhengR.setItem(i, 1, tabItem)
 
 
         hero_location=strategy['hero_location']
         level_3_heros=strategy['level_3_heros']
         k=0
+        print(hero_location)
         for j,heroitem in enumerate(hero_location):
+            if heroitem['hero_id']=="0":
+                # 错误偏移
+                k += 1
+                continue
             try:
                 chessData = chessId_get_data(chess, heroitem['hero_id'])
             except:
@@ -444,7 +448,6 @@ def loadingList():
             squadListUI.tabZhengR.setCellWidget(i, 2 + j-k, tpgFrame)
 
     # 行列大小根据内容调整大小
-
     squadListUI.tabZhengR.resizeRowsToContents()
     squadListUI.tabZhengR.resizeColumnsToContents()
 def zdlistLoading(clist):
@@ -504,7 +507,9 @@ def Hero_loadingList(hero_list):
         tp1.setMaximumSize(208, 106)
         tp1.setMinimumSize(208, 106)
         tp1.setToolTip(tanChudataForm(item, job, race))
+
         #边框颜色
+
         if item["price"] == '1':
             color = '#989898'
         elif item["price"] == '2':
@@ -528,30 +533,34 @@ def Hero_loadingList(hero_list):
         #职业job
         jobIds = item['jobIds'].split(',')
         for item_job in jobIds:
-            #职业图标
-            tp_jb=QLabel()
-            # 每一个的布局
-            hbox_job = QHBoxLayout()#横向布局
-            job_data=jobId_get_data(job, item_job)
-            jbPath = Path_job+job_data['alias']
-            # 让图像适应标签
-            tp_jb.setStyleSheet('tp_jb')
-            tp_jb.setScaledContents(True)
-            tp_jb.setPixmap(QPixmap(jbPath))
-            tp_jb.setMaximumSize(20, 20)
-            tp_jb.setMinimumSize(20, 20)
-            tp_jb.setToolTip(f'''<b style='color:#FFFFFF;'>{job_data['introduce']}<br>{str(job_data['level']).replace('{','').replace('}','').replace(',','<br>')}</b>''' )
+            try:
+                #职业图标
+                tp_jb=QLabel()
+                # 每一个的布局
+                hbox_job = QHBoxLayout()#横向布局
+                job_data=jobId_get_data(job, item_job)
 
-            hbox_job.addWidget(tp_jb)#将图标放入布局中
-            name = QLabel(job_data['name'])
-            name.setToolTip(
-                f'''<b style='color:#FFFFFF;'>{job_data['introduce']}<br>{str(job_data['level']).replace('{', '').replace('}', '').replace(',', '<br>')}</b>''')
+                jbPath = Path_job+job_data['alias']
+                # 让图像适应标签
+                tp_jb.setStyleSheet('tp_jb')
+                tp_jb.setScaledContents(True)
+                tp_jb.setPixmap(QPixmap(jbPath))
+                tp_jb.setMaximumSize(20, 20)
+                tp_jb.setMinimumSize(20, 20)
+                tp_jb.setToolTip(f'''<b style='color:#FFFFFF;'>{job_data['introduce']}<br>{str(job_data['level']).replace('{','').replace('}','').replace(',','<br>')}</b>''' )
 
-            hbox_job.addWidget(name)#然后把羁绊名字放入布局
-            # 尾部加上弹簧让羁绊靠左显示
-            hbox_job.addStretch()
-            #每一行数据放入总职业羁绊布局中
-            vbox_jobRace.addLayout(hbox_job)
+                hbox_job.addWidget(tp_jb)#将图标放入布局中
+                name = QLabel(job_data['name'])
+                name.setToolTip(
+                    f'''<b style='color:#FFFFFF;'>{job_data['introduce']}<br>{str(job_data['level']).replace('{', '').replace('}', '').replace(',', '<br>')}</b>''')
+
+                hbox_job.addWidget(name)#然后把羁绊名字放入布局
+                # 尾部加上弹簧让羁绊靠左显示
+                hbox_job.addStretch()
+                #每一行数据放入总职业羁绊布局中
+                vbox_jobRace.addLayout(hbox_job)
+            except:
+                pass
         #尾部加上弹簧让羁绊靠左显示
         hbox_job.addStretch()
 
@@ -978,9 +987,8 @@ if __name__=='__main__':
     job = tft.get_job()  # 获取所有的职业数据 返回一个列表
     race = tft.get_race()  # 获取所有的羁绊数据 返回一个列表
     downSJ()  # 下载所有数据
-    line_list = tft.get_linelist()
+    tft.get_linelist()
     strategyS = []
-
     ver_info = '0001'  # 附加信息,主要用于查询消费情况 填了更好查询,不填也无所谓
     dictPath = r'1920.txt'  # 字库路径
     processName = 'League of Legends.exe'  # 进程名

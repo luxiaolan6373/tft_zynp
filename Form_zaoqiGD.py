@@ -232,10 +232,14 @@ class ZhaoQiGD(QDialog):
             self.txHbox.addWidget(tp_zqgd)
 
             replace_chosen_heros=self.data['replace_chosen_heros']
-            if replace_chosen_heros != '':
+
+            if replace_chosen_heros != '' and replace_chosen_heros !=None :
                 txjt=QLabel('>')
                 txjt.setObjectName('Title')
                 self.txHbox.addWidget(txjt)
+
+
+
                 for item in replace_chosen_heros.split(','):
                     # 天选备选英雄
                     chessData = chessId_get_data(self.chess, item)

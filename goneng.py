@@ -41,6 +41,7 @@ def equip_get_dj_Data(equip,xj1,xj2):
     :param xj2: 小件2
     :return: 返回找到装备数据
     '''
+
     for item in equip:
         #找到合成符合的大件装备
         if item['type']=='2':
@@ -147,10 +148,22 @@ def tanChudataForm(chessData,job,race):
     # ----------------------
     jobtxt = ''
     racetxt = ''
-    for item in chessData['jobIds'].split(','):
-        jobtxt = jobtxt + jobId_get_data(job, item)['name'] + '&nbsp;'
-    for item in chessData['raceIds'].split(','):
-        racetxt = racetxt + raceId_get_data(race, item)['name'] + '&nbsp;'
+    try:
+        for item in chessData['jobIds'].split(','):
+            try:
+                jobtxt = jobtxt + jobId_get_data(job, item)['name'] + '&nbsp;'
+            except:
+                pass
+    except:
+            pass
+    try:
+        for item in chessData['raceIds'].split(','):
+            try:
+                racetxt = racetxt + raceId_get_data(race, item)['name'] + '&nbsp;'
+            except:
+                pass
+    except:
+        pass
     return f'''
                         <h2 style="color:#FFFFFF;text-align:center;">{chessData['title']}  {chessData['displayName']}</h2>
                         <span style="color:#E7E7E9;">

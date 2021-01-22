@@ -42,6 +42,8 @@ class ZhengRongZW(QDialog):
                         try:
 
                             chessData=chessId_get_data(self.chess,item['hero_id'])
+                            if chessData==None:
+                                continue
                         except:
                             continue
                         zw.setToolTip(tanChudataForm(chessData, self.job, self.race))
