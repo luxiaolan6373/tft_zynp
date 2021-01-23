@@ -17,7 +17,7 @@ class TFT():#云顶攻略类
             for j in range(length - i - 1):
                 if int(list[j]['sortID']) > int(list[j + 1]['sortID']):
                     list[j], list[j + 1] = list[j + 1], list[j]
-        return list
+        return list[::-1]#列表倒置
     def get_strategy(self,listID):#提取攻略 返回一个字典
         strategy=json.loads(self.dataList[listID]['detail'],strict=False)
         return strategy
@@ -41,7 +41,7 @@ class TFT():#云顶攻略类
         equip=[]
         # 排除项
         excludeIds = ['201', '202', '203', '204', '205', '206', '207', '208', '209','210', '211',
-                      '212', '317', '324','331','333','337','340','342','346','349','352','355','']
+                      '212', '317', '324','331','333','337','340','342','346','349','352','355','403']
         for i in j:
             #排除之前版本删除的装备
             if i['equipId'] not in excludeIds:
