@@ -2,6 +2,7 @@ import sys,MainWindow,requests,os,Form_SquadList,Form_strategy,Form_souPaiJieZou
 import Form_zdlist,Form_zb
 from PyQt5.QtWidgets import QCheckBox,QApplication,QMessageBox,QHeaderView,QGridLayout,QPushButton,QMainWindow,QVBoxLayout,QLabel,QFrame,QAbstractItemView,QTableWidgetItem,QDialog,QRadioButton,QHBoxLayout,QSpacerItem,QLineEdit
 from PyQt5.QtCore import Qt
+from PyQt5 import QtCore
 from PyQt5.QtGui import QPixmap,QImage,QCursor,QPalette,QBrush
 from TFT import TFT
 from NaiPai import AutoOPlayingChess
@@ -994,6 +995,8 @@ if __name__=='__main__':
     #-------------------界面----------------------------------------------------
     # 创建一个QApplication类的实例 可以看做是屏幕 要有屏幕对象,才能开始画窗口
     app=QApplication(sys.argv)
+    #自适应DPI缩放
+    QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     #----------mainwindow主窗口------------------
     mainWindow=QMainWindow()#创建一个界面
     ui=MainWindow.Ui_MainWindow()#实例化ui界面对象
@@ -1046,8 +1049,12 @@ if __name__=='__main__':
     # 设置好字库和配置
     atpc.SetDict(dictPath)
     # 判断是否登录成功
+
+
+    print(value)
     if value == 1:  # 免费版的就不要这个if了
         print(f'验证成功!')# 接下来就可以自己查接口说明来使用里面的全部方法了
+        QMessageBox.information(mainWindow, "声明!", '本工具已经免费开源,仅供技术探讨,任何人不得用于商业或非法用途,该工具并未取得腾讯官方授权,所有功能仅用于技术研究和学习!请在研究后自行删除!一切后果及法律责任本人概不负责,如有异议请立即删除!')
         # 启动自动购买棋子程序线程
         t = threading.Thread(target=atpc.startAuto)
         t.setDaemon(True)
