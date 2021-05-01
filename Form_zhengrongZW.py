@@ -40,10 +40,27 @@ class ZhengRongZW(QDialog):
                     pos=item['location'].split(',')
                     if int(pos[0])-1==i and int(pos[1])-1==j:
                         try:
-
-                            chessData=chessId_get_data(self.chess,item['hero_id'])
+                            if item['hero_id'] == "wolf":  # 如果是随从
+                                chessData = {}
+                                chessData['name'] = 'wolf.jpg'
+                                chessData['title'] = '狼灵'
+                                chessData['displayName'] = 'wolf'
+                                chessData['price'] = '1'
+                                chessData['skillName'] = '无'
+                                chessData['skillIntroduce'] = '无'
+                            elif item['hero_id'] == "drogon":
+                                chessData = {}
+                                chessData['name'] = 'dragon.jpg'
+                                chessData['title'] = '龙宝宝'
+                                chessData['displayName'] = 'dragon'
+                                chessData['price'] = '1'
+                                chessData['skillName'] = '无'
+                                chessData['skillIntroduce'] = '无'
+                            else:
+                                chessData=chessId_get_data(self.chess,item['hero_id'])
                             if chessData==None:
                                 continue
+
                         except:
                             continue
                         zw.setToolTip(tanChudataForm(chessData, self.job, self.race))

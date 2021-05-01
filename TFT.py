@@ -26,7 +26,7 @@ class TFT():#云顶攻略类
         返回所有最新卡组的数据列表
         :return:
         '''
-        res =requests.get("https://game.gtimg.cn/images/lol/act/tftzlkauto/json/lineupJson/s4/6/lineup_detail_total.json",
+        res =requests.get("https://game.gtimg.cn/images/lol/act/tftzlkauto/json/lineupJson/s5/6/lineup_detail_total.json",
                           headers=self.headers)
         self.dataList=self.maopao(json.loads(res.text)['lineup_list'])
     def get_chess(self):#f获取所以棋子的资料，返回一个列表
@@ -40,23 +40,23 @@ class TFT():#云顶攻略类
         j=j['data']
         equip=[]
         # 排除项
-        excludeIds = ['201', '202', '203', '204', '205', '206', '207', '208', '209','210', '211',
-                      '212', '317', '324','331','333','337','340','342','346','349','352','355','403']
-        for i in j:
+        for XH,i in enumerate(j):
             #排除之前版本删除的装备
-            if i['equipId'] not in excludeIds:
-                d=dict.fromkeys(('equipId','type','name','effect','keywords','formula','imagePath','TFTID','jobId'))
-                d['equipId'] = i['equipId']#id
-                d['type'] = i['type']#类型,大装备=2 小装备=1
-                d['name'] = i['name']#名字
-                d['effect'] = i['effect']#作用
-                d['keywords'] = i['keywords']#简介
-                d['formula'] = i['formula']#合成需要
-                d['imagePath'] = i['imagePath']#图标地址
-                d['TFTID'] = i['TFTID']
-                d['jobId'] = i['jobId']#职业 如果是有转职功能的,就会有职业不为0
-                d['raceId'] = i['raceId']  # 职业 如果是有转职功能的,就会有职业不为0
-                equip.append(d)
+            if XH<89 :
+                continue
+            d=dict.fromkeys(('equipId','type','name','effect','keywords','formula','imagePath','TFTID','jobId'))
+            d['equipId'] = i['equipId']#id
+            d['type'] = i['type']#类型,大装备=2 小装备=1
+            d['name'] = i['name']#名字
+            d['effect'] = i['effect']#作用
+            d['keywords'] = i['keywords']#简介
+            d['formula'] = i['formula']#合成需要
+            d['imagePath'] = i['imagePath']#图标地址
+            d['TFTID'] = i['TFTID']
+            d['jobId'] = i['jobId']#职业 如果是有转职功能的,就会有职业不为0
+            d['raceId'] = i['raceId']  # 职业 如果是有转职功能的,就会有职业不为0
+            equip.append(d)
+
         return equip
     def get_job(self):#获取所有的职业 返回一个列表
         res=requests.get('https://game.gtimg.cn/images/lol/act/img/tft/js/job.js',headers=self.headers)
@@ -105,7 +105,7 @@ def main():
         # 具体的调用字典的哪个key.请自己看函数里面的备注说明.要显示出来就需要自己写一个界面了.饭已做好,要自己拿筷子吃了 举一反三
         #这里演示的一些数据 还有N多数据,反正都已经获取到了
         strategy=tft.get_strategy(i)
-        print( strategy)
+        print(strategy)
 if __name__=="__main__":
     main()
 

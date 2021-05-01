@@ -29,14 +29,13 @@ def updataAutoChess():
             # 将需要购买的棋子放入池子中
             atpc.chess=chessList
             zdlistLoading(chessList)
-            print('目前的自动列表:',atpc.chess)
 def downSJ():
     '''
     下载官网的图片数据
     :return:
     '''
     '棋子图片'
-    if len(os.listdir(Path_chess))< len(chess):
+    if len(os.listdir(Path_chess))-2< len(chess):
         for item in chess:
             name=item['name']
             url = f"https://game.gtimg.cn/images/lol/act/img/tft/champions/{name}"
@@ -44,6 +43,17 @@ def downSJ():
             Path_1 = f"{Path_chess}/{name}"
             with open(Path_1, 'wb')as f:
                 f.write(res.content)
+        #随从图
+        url = f"https://game.gtimg.cn/images/lol/act/a20200224tft/type-dragon.jpg"
+        res = requests.get(url)
+        Path_1 = f"{Path_chess}/dragon.jpg"
+        with open(Path_1, 'wb')as f:
+            f.write(res.content)
+        url = f"https://game.gtimg.cn/images/lol/act/a20200224tft/type-wolf.jpg"
+        res = requests.get(url)
+        Path_1 = f"{Path_chess}/wolf.jpg"
+        with open(Path_1, 'wb')as f:
+            f.write(res.content)
 
     '棋子大图'
     if len(os.listdir(Path_chess_D))< len(chess):
@@ -180,7 +190,6 @@ def buttonClick():
             pass
 
         app.quit()
-    print('单击了',mainWindow.sender().text())
     mainWindow.sender().setEnabled(True)
 def tablistClick():
     '''
@@ -208,7 +217,6 @@ def checkBoxStateChanged(a):
            atpc.delChess_bn(i)
         else:
             atpc.Chess_bn_Add(i)
-        print('标记不点列表',atpc.chess_bn)
     except:
         pass
 def double_click_Hero_remove(index):
@@ -233,7 +241,6 @@ def double_click_Hero_Add(index):
             zdlistUI.tabZDlist.setColumnCount(column)
             zidong_kuanjia(heroItems[i], zdlistUI.tabZDlist.columnCount() - 1)  # 加入一个数据
             atpc.chessAdd(heroItems[i]['displayName'])  # 加入
-            print('目前的自动列表:', atpc.chess)
 
     except:
         pass
@@ -250,7 +257,6 @@ def keyReleaseEvent_zd(event):
             if name in atpc.chess_bn:#不拿列表如果有也要清空,,不然就没法办法取消了
                 atpc.chess_bn.remove(name)  # 删除指定的棋子
             atpc.removeChess(name)  # 删除指定的棋子
-        print('当前自动列表:',atpc.chess)
         zdlistLoading(atpc.chess)
 
 
@@ -263,7 +269,6 @@ def rb_click(biaoji):
     '''
     global tj_chess
     text=heroForm.sender().text()
-    print(text, biaoji)
     #根据标识然后把条件加入条件列表tj_chess中
     if biaoji=='price':
         if text=='全部':
@@ -274,7 +279,7 @@ def rb_click(biaoji):
         if text == '全部':
             tj_chess[1]='0'
         else:
-            print('text',text)
+
             #根据职业名取id
             tj_chess[1] = jobName_get_data(job,text)['jobId']
     if biaoji=='race':
@@ -283,7 +288,6 @@ def rb_click(biaoji):
         else:
             # 根据羁绊名取id
             tj_chess[2]=raceName_get_data(race,text)['raceId']
-    print('条件列表',tj_chess)
     Hero_loadingList(Hero_filter(chess,tj_chess[0],tj_chess[1],tj_chess[2],tj_chess[3]))
 def bjk_editing(led_keyword):
     '''
@@ -293,7 +297,6 @@ def bjk_editing(led_keyword):
     global tj_chess
     tj=led_keyword.text()
     tj_chess[3] = tj
-    print(tj_chess[3])
 
 
 #载入和初始化
@@ -369,10 +372,11 @@ def loadingList():
 
         hero_location=strategy['hero_location']
         level_3_heros=strategy['level_3_heros']
+
         k=0
-        print(hero_location)
+
         for j,heroitem in enumerate(hero_location):
-            if heroitem['hero_id']=="0":
+            if heroitem['hero_id']=="0" or heroitem['hero_id']=='wolf' or heroitem['hero_id']=='drogon':
                 # 错误偏移
                 k += 1
                 continue
@@ -383,7 +387,7 @@ def loadingList():
                 k+=1
                 continue
             tpgFrame= QFrame()
-            #天选英雄
+            """#天选英雄
             if 'isChosenHero' in heroitem:
                 if heroitem['isChosenHero']!=None:
 
@@ -393,11 +397,14 @@ def loadingList():
                         border: 1px solid #DF8AE7; 
                         border-radius: 5px; 
                           }''')
+            #---------------"""
+
             vbox = QVBoxLayout()
 
             tp = QLabel(tpgFrame)
-            if heroitem['hero_id'] in level_3_heros:
-                tp.setText('★★★')
+            if level_3_heros!=None:
+                if heroitem['hero_id'] in level_3_heros:
+                    tp.setText('★★★')
             tphot.setAlignment(Qt.AlignCenter)
             tp.setStyleSheet('''
                 margin: 1px;               
@@ -415,8 +422,8 @@ def loadingList():
             tp1.setMinimumSize(42, 42)
             #让图像适应标签
             tp1.setScaledContents(True)
-            tp1.setToolTip(tanChudataForm(chessData,job,race))
 
+            tp1.setToolTip(tanChudataForm(chessData,job,race))
 
             if chessData["price"] =='1':
                 color = '#989898'
@@ -724,7 +731,6 @@ def zdListInitialize():
             clist = f.read().split()
         zdlistLoading(clist)
         atpc.chess = clist
-        print('目前的自动列表:',atpc.chess)
     except:
         pass
 def heroFormInitialize():

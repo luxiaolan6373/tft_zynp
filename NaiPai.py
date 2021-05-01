@@ -181,7 +181,7 @@ class AutoOPlayingChess():
             # 循环,直到窗口不见了
             bn_num=0
             while self.hwnd != 0:
-                time.sleep(0.1)
+                time.sleep(0.2)
                 if len(self.chess) > 0:  # 判断自动购买棋子池是否有需要购买的棋子,有需要才有必要运行下面的代码
                     # 返回的是5个当前商店棋子名以及坐标
                     sls = self.dm.OcrEx(starX, lScreenHeight, ScreenWidth, ScreenHeight, color_format, sim).split('|')

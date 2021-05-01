@@ -46,8 +46,9 @@ def equip_get_dj_Data(equip,xj1,xj2):
         #找到合成符合的大件装备
         if item['type']=='2':
             formula = item['formula'].split(',')
+
             if xj1==xj2:
-                if xj1 == formula[0] and xj2 in formula[1]:
+                if xj1 == formula[0] and xj2 ==  formula[1]:
                     return item
             else:
                 if xj1 in formula and xj2 in formula:
@@ -243,6 +244,7 @@ def job_get_background_sf(job,job_id,s,sftx=False):
     try:
         itemJob=jobId_get_data(job, job_id)
         level = len(itemJob['level'])
+        print(level)
         #如果有天选
         if sftx==True :
             #直接返回最华丽的背景图
@@ -258,7 +260,7 @@ def job_get_background_sf(job,job_id,s,sftx=False):
                 if s>=int(sss[0]) and s<int(sss[1]):
                     return Path_img+'bg2.png',Path_job+itemJob['alias'],itemJob
                 elif s>=int(sss[1]) :
-                    return Path_img+'bg3.png',Path_job+itemJob['alias'],itemJob
+                    return Path_img+'bg4.png',Path_job2+itemJob['alias'],itemJob
                 else:
                     return None
             elif level==3:#分3个阶段时

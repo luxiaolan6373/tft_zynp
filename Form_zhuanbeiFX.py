@@ -102,11 +102,8 @@ class ZhuangGeiFX(QDialog):
                     except:
                         pass
 
-
-
                     zbpath = Path_equip+djzb['imagePath'].split('/')[-1]
-
-                    #print('大装备', zbpath)
+                    #大件装备
 
                     tp_djzb=QLabel()
                     # 让图像适应标签
@@ -114,6 +111,7 @@ class ZhuangGeiFX(QDialog):
                     tp_djzb.setPixmap(QPixmap(zbpath))
                     tp_djzb.setMaximumSize(40, 40)
                     tp_djzb.setMinimumSize(40, 40)
+                    tp_djzb.setToolTip(tanChu_EquipData(self.equip, djzb))
                     self.zbtj_YLH[-1].addWidget(tp_djzb)
                     #取小装备的id
                     self.xjzb_Vbox.append(QVBoxLayout())
@@ -123,7 +121,6 @@ class ZhuangGeiFX(QDialog):
                         xjzb = equipId_get_data(self.equip, itemXJ)
                         xjzbpath = Path_equip+xjzb['imagePath'].split('/')[-1]
                         #print('小装备', zbpath)
-
                         tp_xjzb = QLabel()
                         # 让图像适应标签
                         tp_xjzb.setScaledContents(True)
@@ -135,7 +132,7 @@ class ZhuangGeiFX(QDialog):
                     self.xjzb_Vbox[-1].addStretch()
 
                 self.zbtj_YLH[-1].addStretch()
-            # 天选羁绊和职业存入
+            """ # 天选羁绊和职业存入
             if 'isChosenHero' in item:
 
                 if item['isChosenHero'] != None:
@@ -149,7 +146,7 @@ class ZhuangGeiFX(QDialog):
                     else:
                         job_list.append(txData['job'])
                 else:
-                    pass
+                    pass"""
 
         #职业分析组件---------------------------------------------
         self.from_job =QFrame()

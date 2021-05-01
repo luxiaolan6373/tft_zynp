@@ -31,8 +31,9 @@ class ZhaoQiGD(QDialog):
         self.qqtitle.setObjectName('Title')
         self.qqHbox.addWidget(self.qqtitle)
         #往里面加图片
-        if self.data['early_heros']!='':
-            for item in self.data['early_heros'].split(','):
+        if self.data['y21_early_heros']!='':
+            for item in self.data['y21_early_heros']:
+                item=item['hero_id']
                 chessData = chessId_get_data(self.chess, item)
                 zwpath = Path_chess+chessData['name']
 
@@ -69,8 +70,9 @@ class ZhaoQiGD(QDialog):
         self.zqtitle.setObjectName('Title')
         self.zqHbox.addWidget(self.zqtitle)
         # 往里面加图片
-        if self.data['metaphase_heros'] != '':
-            for item in self.data['metaphase_heros'].split(','):
+        if self.data['y21_metaphase_heros'] != '':
+            for item in self.data['y21_metaphase_heros']:
+                item=item['hero_id']
                 chessData = chessId_get_data(self.chess, item)
                 zwpath = Path_chess+chessData['name']
                 if chessData["price"] == '1':
