@@ -1,5 +1,3 @@
-**tft_zynpzy**
-
 **云顶官方接口**：https：/////lol.qq.com/tft/js/api.js
 
 **免责声明**
