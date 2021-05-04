@@ -1,5 +1,6 @@
-from PyQt5.QtWidgets import QLabel,QVBoxLayout,QFrame,QGridLayout,QDialog
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 from goneng import chessId_get_data,tanChudataForm
 from setting import *
 
@@ -13,8 +14,9 @@ class ZhengRongZW(QDialog):
         self.race=race
         self.initshow()
     def initshow(self):
-        self.setMinimumWidth(504)
-        self.setMaximumWidth(530)
+        self.setMinimumWidth(500)
+        self.setMaximumWidth(500)
+
         self.setObjectName('zhengrongZW')
         self.zrzwTitle=QLabel('阵容站位')
         self.zrzwTitle.setObjectName('Title')
@@ -23,15 +25,24 @@ class ZhengRongZW(QDialog):
         self.zrzwDoc.setObjectName('Doc')
         self.zrzwDoc.setWordWrap(True)
         #创建站位图
-        self.zwbjFrom=QFrame()
-        self.zwGFBox=QGridLayout()#创建表格布局
-        self.zwGFBox.setContentsMargins(0,0,0,0)
-        # 控件间距
-        self.zwGFBox.setSpacing(0)
+        self.zwbjFrom=QFrame()#站位框架
+        self.zwbjFrom.setMinimumWidth(430)
+        self.zwbjFrom.setMaximumWidth(430)
+        self.zwGFBox=QVBoxLayout(self.zwbjFrom)#创建纵向布局
+        self.zwGFBox.setContentsMargins(0,0,0,5)#边距
+        self.zwGFBox.setSpacing(5)# 控件间距
+        self.zwHBoxs=[]#横向的
         for i in range(4):
+            qvbox=QHBoxLayout()
+            qvbox.setContentsMargins(0,0,0,0)
+            qvbox.setSpacing(10)
+            self.zwHBoxs.append(qvbox)
+            if i==1 or i==3:
+                spacerItem = QSpacerItem(25, 10)
+                qvbox.addItem(spacerItem)
 
             for j in range(7):
-                zw = QLabel(self.zwbjFrom)
+                zw = QLabel()
                 # 让图像适应标签
                 zw.setScaledContents(True)
                 zwpath = Path_img+'none.png'
@@ -60,7 +71,6 @@ class ZhengRongZW(QDialog):
                                 chessData=chessId_get_data(self.chess,item['hero_id'])
                             if chessData==None:
                                 continue
-
                         except:
                             continue
                         zw.setToolTip(tanChudataForm(chessData, self.job, self.race))
@@ -79,50 +89,32 @@ class ZhengRongZW(QDialog):
                 zw.setPixmap(QPixmap(zwpath))
                 zw.setMaximumSize(50, 50)
                 zw.setMinimumSize(50, 50)
-
+                zw.setObjectName('jj')
                 if i==1 or i==3:
-                    zw.setMaximumSize(67, 50)
-                    zw.setMinimumSize(67, 50)
-                    zw.setObjectName('jj')
-
                     if zwpath != Path_img+'none.png':
-                        zw.setStyleSheet('''#jj{margin-left: 17px;margin-top: 2px;border: 1px solid %s;border-radius: 10px;  }
-                            ''' % color)
+                        zw.setStyleSheet('''#jj{margin-top: 2px;border: 1px solid %s;border-radius: 10px;  }''' % color)
                     else:
-                        zw.setStyleSheet('''#jj{margin-left: 17px;margin-top: 2px; }
-                                                                    ''')
+                        zw.setStyleSheet('''#jj{margin-top: 2px; }''')
                 else:
                     zw.setObjectName('zz')
-
                     if zwpath != Path_img+'none.png':
-                        zw.setStyleSheet('''#zz{margin-left: 0px;margin-top: 2px;border: 1px solid %s;border-radius: 10px;  }
-                            ''' % color)
+                        zw.setStyleSheet('''#zz{margin-top: 2px;border: 1px solid %s;border-radius: 10px;  }''' % color)
                     else:
-                        zw.setStyleSheet('''#zz{margin-left: 0px;margin-top: 2px; }
-                                                                    ''')
-
-                self.zwGFBox.addWidget(zw, i, j)
-
-
-
-
-
-        self.zwbjFrom.setLayout(self.zwGFBox)
-
+                        zw.setStyleSheet('''#zz{margin-top: 2px; }''')
+                self.zwHBoxs[-1].addWidget(zw)
+            if i==0 or i==2:
+                spacerItem = QSpacerItem(30, 10)
+                self.zwHBoxs[-1].addItem(spacerItem)
+            self.zwGFBox.addLayout(self.zwHBoxs[-1])
         self.hbox=QVBoxLayout()
         self.hbox.addWidget(self.zrzwTitle)
-
         self.hbox.addWidget(self.zwbjFrom)
         self.hbox.addWidget(self.zrzwDoc)
         self.hbox.setSpacing(2)
         self.setLayout(self.hbox)
-
-
-
         self.setStyleSheet('''
         #zhengrongZW{
             border: 1px solid rgb(185, 185, 185);  
-    	    
     	    border-right-style:none;
             border-top-style:none;
         }

@@ -74,7 +74,7 @@ QPushButton:hover {
    <item>
     <widget class="QPushButton" name="bt_qrzd">
      <property name="text">
-      <string>确认自动</string>
+      <string>确认展示</string>
      </property>
     </widget>
    </item>

@@ -1,18 +1,20 @@
-import sys,MainWindow,requests,os,Form_SquadList,Form_strategy,Form_souPaiJieZou,Form_zhengrongZW,Form_zaoqiGD,Form_zhuanbeiFX,Form_hero
-import Form_zdlist,Form_zb
-from PyQt5.QtWidgets import QCheckBox,QApplication,QMessageBox,QHeaderView,QGridLayout,QPushButton,QMainWindow,QVBoxLayout,QLabel,QFrame,QAbstractItemView,QTableWidgetItem,QDialog,QRadioButton,QHBoxLayout,QSpacerItem,QLineEdit
+import sys, requests,os
+from ui import Form_souPaiJieZou, Form_zhengrongZW, MainWindow, Form_SquadList, Form_zhuanbeiFX, Form_zaoqiGD, \
+    Form_hero, Form_zdlist, Form_strategy, Form_zb
+from PyQt5.QtWidgets import QCheckBox,QApplication, QGridLayout,QPushButton,QMainWindow,QVBoxLayout,QLabel,QFrame,QAbstractItemView,QTableWidgetItem,QDialog,QRadioButton,QHBoxLayout, \
+    QLineEdit
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPixmap,QImage,QCursor,QPalette,QBrush
+from PyQt5.QtGui import QPixmap, QCursor
 from TFT import TFT
-from NaiPai import AutoOPlayingChess
 from goneng import *
 from setting import *
-import threading,copy
+import copy,webbrowser
+
 
 #功能
 def updataAutoChess():
-    global atpc,chess
+    global chess_show_list,chess
     chessList = []  # 选中的棋子池
     if  dangqianData!='':
         hero_location=dangqianData['hero_location']
@@ -27,7 +29,7 @@ def updataAutoChess():
                 pass
         if len(chess)>0:
             # 将需要购买的棋子放入池子中
-            atpc.chess=chessList
+            chess_show_list=chessList
             zdlistLoading(chessList)
 def downSJ():
     '''
@@ -127,7 +129,7 @@ def buttonClick():
                 equipForm.setVisible(False)
             except:
                 pass
-    if mainWindow.sender().text()=='自动列表':
+    if mainWindow.sender().text()=='展示列表':
         if zdlistForm.isVisible():#如果自动列表已经显示了,则关闭显示
             zdlistForm.setVisible(False)
             if squadList.isVisible():
@@ -181,15 +183,18 @@ def buttonClick():
     if mainWindow.sender().text()=='关闭':
         text=''
         try:
-            if len(atpc.chess) > 0:
+            if len(chess_show_list) > 0:
                 with open('data/zdlist.ini', 'w') as f:
-                    for item in atpc.chess:
+                    for item in chess_show_list:
                         text=text+item+" "
                     f.write(text)
         except:
             pass
 
         app.quit()
+    if mainWindow.sender().text() == '交流':
+        webbrowser.open("https://www.52pojie.cn/thread-1287172-1-1.html")
+
     mainWindow.sender().setEnabled(True)
 def tablistClick():
     '''
@@ -204,60 +209,46 @@ def tablistClick():
     #同时展开 早期过渡和装备分析
     showZaoQiGD(True)
     showZhuangBeiFX(True)
-def checkBoxStateChanged(a):
-    '''
-    复选框选中与不选中事件,用来标记暂时不点的棋子
-    :param a:
-    :return:
-    '''
-    global zdlistForm,zdlistUI
-    try:
-        i=int(zdlistForm.sender().text()) # 获取当前列索引
-        if a==2:#选中
-           atpc.delChess_bn(i)
-        else:
-            atpc.Chess_bn_Add(i)
-    except:
-        pass
+
+
 def double_click_Hero_remove(index):
     '''
     删除数据支持多选
     :return:
     '''
-    global zdlistForm, zdlistUI
+    global zdlistForm, zdlistUI,chess_show_list
     try:
         column = index.column()  # 获取当前列索引
         zdlistUI.tabZDlist.removeColumn(column)  # 从自动列表tab中删除
-        atpc.delChess(column)  # 删除指定位置的
+        chess_show_list.pop(column)  # 删除指定位置的
     except:
         pass
 def double_click_Hero_Add(index):
     '''双击增加一个自动列表的棋子'''
-    global atpc,heroItems
+    global heroItems,chess_show_list
     try:
         i = index.column() + (index.row() * 4)
-        if heroItems[i]['displayName'] not in atpc.chess:
+        if heroItems[i]['displayName'] not in chess_show_list and len(chess_show_list)<=10:#去重复和最多11个
             column = zdlistUI.tabZDlist.columnCount() + 1
             zdlistUI.tabZDlist.setColumnCount(column)
             zidong_kuanjia(heroItems[i], zdlistUI.tabZDlist.columnCount() - 1)  # 加入一个数据
-            atpc.chessAdd(heroItems[i]['displayName'])  # 加入
-
-    except:
-        pass
+            chess_show_list.append(heroItems[i]['displayName'])  # 加入
+            print(chess_show_list)
+    except Exception as err:
+        print('double_click_Hero_Add',err)
 
 def keyReleaseEvent_zd(event):
+    global chess_show_list
     if event.key()==16777223:
         #当前选中列
         sc_ls=[]#被选中的
         for item in zdlistUI.tabZDlist.selectedIndexes():
             column=item.column()
             #找到名字然后存进去
-            sc_ls.append(atpc.chess[column])
+            sc_ls.append(chess_show_list[column])
         for name in sc_ls:
-            if name in atpc.chess_bn:#不拿列表如果有也要清空,,不然就没法办法取消了
-                atpc.chess_bn.remove(name)  # 删除指定的棋子
-            atpc.removeChess(name)  # 删除指定的棋子
-        zdlistLoading(atpc.chess)
+            chess_show_list.remove(name)  # 删除指定的棋子
+        zdlistLoading(chess_show_list)
 
 
 #英雄相关功能
@@ -301,8 +292,13 @@ def bjk_editing(led_keyword):
 
 #载入和初始化
 def zidong_kuanjia(chessData,i):
+    '''
+    更新展示列表界面
+    :param chessData:
+    :param i:
+    :return:
+    '''
     xzFrame = QFrame()  # 框架
-
     zwpath = Path_chess + chessData['name']
     if chessData["price"] == '1':
         color = '#989898'
@@ -314,31 +310,32 @@ def zidong_kuanjia(chessData,i):
         color = '#C81FC8'
     else:
         color = '#FDBC03'
-    tp_qlb = QLabel(xzFrame)
+    vbox = QVBoxLayout(xzFrame)
+    vbox.setContentsMargins(0, 0, 0, 0)
+
+    tp_qlb = QLabel()
     # 让图像适应标签
     tp_qlb.setScaledContents(True)
     tp_qlb.setPixmap(QPixmap(zwpath))
-    tp_qlb.setMaximumSize(50, 50)
-    tp_qlb.setMinimumSize(50, 50)
+    tp_qlb.setAlignment(Qt.AlignCenter)  # 居中
+    tp_qlb.setMaximumSize(70, 70)
+    tp_qlb.setMinimumSize(70, 70)
     tp_qlb.setObjectName('tp_qlb')
     tp_qlb.setToolTip(tanChudataForm(chessData, job, race))
-    tp_qlb.setStyleSheet('''#tp_qlb{padding: 1px;  border: 1px solid %s;border-radius: 12px;  }''' % color)
-    qkBts = QCheckBox(xzFrame)
-    qkBts.setObjectName('qkBts')
-    if chessData['displayName'] in atpc.chess_bn:
-        qkBts.setChecked(False)
-    else:
-        qkBts.setChecked(True)
-
-    qkBts.setText("          " + str(i))
-    qkBts.setStyleSheet('''#qkBts{
-            Color:red;
-            }''')
-
-    qkBts.stateChanged[int].connect(checkBoxStateChanged)
-
+    tp_qlb.setStyleSheet('''#tp_qlb{padding: 1px;  border: 2px solid %s;border-radius: 12px;  }''' % color)
+    title = QLabel()
+    title.setText(chessData['displayName'])
+    title.setAlignment(Qt.AlignCenter)  # 居中
+    title.setObjectName('title')
+    title.setStyleSheet('''#title{
+                Color:%s;
+                background-color: rgba(0, 0, 0, 150);
+                }''' % color)
+    vbox.addWidget(tp_qlb)
+    vbox.addWidget(title)
     zdlistUI.tabZDlist.setCellWidget(0, i, xzFrame)
-    zdlistUI.tabZDlist.setColumnWidth(i, 52)  # 设置某列的宽度
+    zdlistUI.tabZDlist.setColumnWidth(i, 70)  # 设置某列的宽度
+    zdlistUI.tabZDlist.setRowHeight(0, 85)  # 设置某行的宽度
 def loadingList():
     '''
     载入官方列表
@@ -470,14 +467,7 @@ def zdlistLoading(clist):
     for i, item in enumerate(clist):
         chessData = chessName_get_data(chess, item)
         zidong_kuanjia(chessData,i)
-    zdlistUI.tabZDlist.setRowHeight(0, 52)  # 设置某行的高度
-
-
-    #zdlistUI.tabZDlist.setRowHeight(20,20)
-
-    # 行列大小根据内容调整大小
-    #zdlistUI.tabZDlist.resizeRowsToContents()
-    #zdlistUI.tabZDlist.resizeColumnsToContents()
+    zdlistUI.tabZDlist.setRowHeight(0, 85)  # 设置某行的高度
 def Hero_loadingList(hero_list):
     '''
     根据所提供的数据把列表在tabw中显示出来
@@ -639,7 +629,7 @@ def mainWindowInitialize():
     :return:
     '''
     mainWindow.move(0, 0)
-    mainWindow.setWindowTitle('自用拿牌 www.52pojie.cn')
+    mainWindow.setWindowTitle('TFT阵容查看 www.52pojie.cn')
     ui.horizontalLayout.setContentsMargins(0,0,1,0)
     mainWindow.resize(500, 40)
     mainWindow.setWindowFlags(Qt.WindowMaximizeButtonHint | Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
@@ -676,8 +666,6 @@ def squadListInitialize():
     '''
     # 加载官方列表
     squadList.resize(740, 240)
-
-
     squadList.setCursor(QCursor(Qt.PointingHandCursor))
     squadListUI.verticalLayout.setContentsMargins(0, 0, 0, 0)
     squadList.move(0, mainWindow.geometry().height())
@@ -702,8 +690,9 @@ def zdListInitialize():
     界面初始化
     :return:
     '''
+    global chess_show_list
     # 加载自动列表
-    zdlistForm.resize(566, 30)
+    zdlistForm.resize(800, 105)
     #鼠标
     zdlistForm.setCursor(QCursor(Qt.PointingHandCursor))
     #位置
@@ -730,12 +719,12 @@ def zdListInitialize():
         with open('data/zdlist.ini', 'r') as f:
             clist = f.read().split()
         zdlistLoading(clist)
-        atpc.chess = clist
+        chess_show_list = clist
     except:
         pass
 def heroFormInitialize():
     '''
-    界面初始化
+    英雄选择界面初始化
     :return:
     '''
     # 加载自动列表
@@ -818,8 +807,6 @@ def equipFormInitialize():
     equipForm.setAttribute(Qt.WA_TranslucentBackground)  # 窗口透明
     equipForm.move(0, mainWindow.height())
 
-
-
 #攻略组件
 def showShouPaiJieZou():
     global zbfxFrom,zrzwFrom,zqgdFrom,spjzFrom
@@ -859,7 +846,7 @@ def showZhengRongZW():
             zrzwFrom.setVisible(False)
             return
     if dangqianData!='':
-        zrzwFrom = Form_zhengrongZW.ZhengRongZW(dangqianData, chess,job,race)
+        zrzwFrom = Form_zhengrongZW.ZhengRongZW(dangqianData, chess, job, race)
         try:
             zbfxFrom.setVisible(False)
         except:
@@ -894,7 +881,7 @@ def showZaoQiGD(kg=False):
     # 如果不是列表里点进来的.则分析一下情况
     if dangqianData!='':#如果数据正常的话继续执行
         #创建窗口
-        zqgdFrom = Form_zaoqiGD.ZhaoQiGD(dangqianData, chess,job,race)
+        zqgdFrom = Form_zaoqiGD.ZhaoQiGD(dangqianData, chess, job, race)
         try:#把其它的界面先隐藏掉
             if kg != True:
                 zbfxFrom.setVisible(False)
@@ -970,6 +957,7 @@ if __name__=='__main__':
     zbfxFrom=''#装备分析窗口全局占位
     heroItems=[]#英雄框数据占位置
     tj_chess=['0','0','0','']#棋子搜索条件初始化
+    chess_show_list=[]#展示列表
     #全局路径-----------------------------------
     # 检查目录结构,防止错误
     if os.path.isdir(Path_chess) == False:
@@ -995,9 +983,6 @@ if __name__=='__main__':
     downSJ()  # 下载所有数据
     tft.get_linelist()
     strategyS = []
-    ver_info = '0001'  # 附加信息,主要用于查询消费情况 填了更好查询,不填也无所谓
-    dictPath = r'1920.txt'  # 字库路径
-    processName = 'League of Legends.exe'  # 进程名
     #-------------------界面----------------------------------------------------
     # 创建一个QApplication类的实例 可以看做是屏幕 要有屏幕对象,才能开始画窗口
     app=QApplication(sys.argv)
@@ -1005,17 +990,10 @@ if __name__=='__main__':
     QtCore.QCoreApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling)
     #----------mainwindow主窗口------------------
     mainWindow=QMainWindow()#创建一个界面
-    ui=MainWindow.Ui_MainWindow()#实例化ui界面对象
+    ui= MainWindow.Ui_MainWindow()#实例化ui界面对象
     ui.setupUi(mainWindow)#运行里面的代码
     mainWindowInitialize() #初始化赋值
     mainWindow.show() #显示
-    #读取注册码---------------------------------
-    try:
-        with open('大漠注册码.txt', 'r')as f:
-            reg_code = f.read()  # 大漠后台的注册码
-    except:
-        reg_code = ''
-        QMessageBox.warning(mainWindow, "警告!", '您的注册码有误!,请确保您在根目录下 大漠注册码.txt中填了正确的注册码')
     # ----------strategyForm攻略选项面板------------------
     straForm = QDialog()  # 创建一个界面
     straFormUI = Form_strategy.Ui_strategyForm()  # 实例化ui界面对象
@@ -1040,8 +1018,6 @@ if __name__=='__main__':
     squadListUI.setupUi(squadList)
     squadListInitialize()
     # ----------------------------------------------------------------------------
-    # 创建自动购买棋子对象,然后创建线程启动运行
-    atpc = AutoOPlayingChess()
     # ----------自动列表创建出来------------------
     zdlistForm = QDialog()  # 创建一个界面
     zdlistUI = Form_zdlist.Ui_zdlistForm()  # 实例化ui界面对象
@@ -1049,30 +1025,6 @@ if __name__=='__main__':
     zdListInitialize()  # 初始化赋值
     zdlistForm.show()  # 显示
 
-
-    # 登录大漠,免费版的大漠就可以省略这一步
-    value = atpc.dmReg(reg_code, ver_info)
-    # 设置好字库和配置
-    atpc.SetDict(dictPath)
-    # 判断是否登录成功
-
-
-    print(value)
-    if value == 1:  # 免费版的就不要这个if了
-        print(f'验证成功!')# 接下来就可以自己查接口说明来使用里面的全部方法了
-        QMessageBox.information(mainWindow, "声明!", '本工具已经免费开源,仅供技术探讨,任何人不得用于商业或非法用途,该工具并未取得腾讯官方授权,所有功能仅用于技术研究和学习!请在研究后自行删除!一切后果及法律责任本人概不负责,如有异议请立即删除!')
-        # 启动自动购买棋子程序线程
-        t = threading.Thread(target=atpc.startAuto)
-        t.setDaemon(True)
-        t.start()
-        # 进入程序主循环,并通过exit函数确保主循环安全结束
-
-
-    else:
-        if value == -2:
-            QMessageBox.warning(mainWindow, "警告!", '进程没有以管理员方式运行或者被第三方杀毒拦截. \n也有可能是大漠注册码错误或者没钱了\n(不影响使用,但是不会自动拿牌)')
-        else:
-            QMessageBox.warning(mainWindow,  "警告!", f'验证失败,失败代码为:{value}!')
     sys.exit(app.exec_())
         
 

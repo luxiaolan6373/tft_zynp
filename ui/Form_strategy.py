@@ -65,4 +65,4 @@ class Ui_strategyForm(object):
         self.bt_spjz.setText(_translate("strategyForm", "搜牌节奏"))
         self.bt_zbfx.setText(_translate("strategyForm", "装备分析"))
         self.bt_zrzw.setText(_translate("strategyForm", "阵容站位"))
-        self.bt_qrzd.setText(_translate("strategyForm", "确认自动"))
+        self.bt_qrzd.setText(_translate("strategyForm", "确认展示"))

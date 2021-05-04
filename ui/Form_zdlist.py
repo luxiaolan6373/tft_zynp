@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_zdlistForm(object):
     def setupUi(self, zdlistForm):
         zdlistForm.setObjectName("zdlistForm")
-        zdlistForm.resize(212, 261)
+        zdlistForm.resize(212, 406)
         zdlistForm.setStyleSheet("\n"
 "#tabZDlist::pane{    \n"
 "    border: none;\n"
@@ -30,16 +30,9 @@ class Ui_zdlistForm(object):
 "    padding: 4px;\n"
 "    border-radius:10px;\n"
 "}\n"
-" \n"
 "\n"
-"QCheckBox::indicator:unchecked\n"
-"{\n"
-"image:url(data/img/SrvSta3.png);\n"
-"}\n"
-"QCheckBox::indicator:checked\n"
-"{\n"
-"image:url(data/img/SrvSta1.png);\n"
-"}\n"
+"\n"
+"\n"
 "")
         self.verticalLayout = QtWidgets.QVBoxLayout(zdlistForm)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)

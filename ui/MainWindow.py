@@ -94,9 +94,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.bt_zdlb.setText(_translate("MainWindow", "自动列表"))
+        self.bt_zdlb.setText(_translate("MainWindow", "展示列表"))
         self.bt_gfzr.setText(_translate("MainWindow", "官方阵容"))
         self.bt_yx.setText(_translate("MainWindow", "英雄"))
         self.bt_zb.setText(_translate("MainWindow", "装备"))
-        self.bt_ds.setText(_translate("MainWindow", "打赏"))
+        self.bt_ds.setText(_translate("MainWindow", "交流"))
         self.bt_gb.setText(_translate("MainWindow", "关闭"))

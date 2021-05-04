@@ -244,7 +244,6 @@ def job_get_background_sf(job,job_id,s,sftx=False):
     try:
         itemJob=jobId_get_data(job, job_id)
         level = len(itemJob['level'])
-        print(level)
         #如果有天选
         if sftx==True :
             #直接返回最华丽的背景图

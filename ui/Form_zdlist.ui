@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>212</width>
-    <height>261</height>
+    <height>406</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,16 +29,9 @@ border: 2px solid qconicalgradient(cx:0, cy:0, angle:135, stop:0 rgba(255, 255, 
 	padding: 4px;
 	border-radius:10px;
 }
- 
 
-QCheckBox::indicator:unchecked
-{
-image:url(data/img/SrvSta3.png);
-}
-QCheckBox::indicator:checked
-{
-image:url(data/img/SrvSta1.png);
-}
+
+
 </string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">

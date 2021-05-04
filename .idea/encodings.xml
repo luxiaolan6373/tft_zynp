@@ -2,5 +2,6 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/1920.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/data/zdlist.ini" charset="GBK" />
   </component>
 </project>

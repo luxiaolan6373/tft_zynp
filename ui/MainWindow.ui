@@ -83,7 +83,7 @@ QPushButton:hover {
     <item>
      <widget class="QPushButton" name="bt_zdlb">
       <property name="text">
-       <string>自动列表</string>
+       <string>展示列表</string>
       </property>
      </widget>
     </item>
@@ -147,7 +147,7 @@ QPushButton:hover {
     <item>
      <widget class="QPushButton" name="bt_ds">
       <property name="text">
-       <string>打赏</string>
+       <string>交流</string>
       </property>
      </widget>
     </item>
