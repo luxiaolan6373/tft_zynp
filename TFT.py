@@ -56,7 +56,6 @@ class TFT():#云顶攻略类
             d['jobId'] = i['jobId']#职业 如果是有转职功能的,就会有职业不为0
             d['raceId'] = i['raceId']  # 职业 如果是有转职功能的,就会有职业不为0
             equip.append(d)
-
         return equip
     def get_job(self):#获取所有的职业 返回一个列表
         res=requests.get('https://game.gtimg.cn/images/lol/act/img/tft/js/job.js',headers=self.headers)
@@ -95,17 +94,29 @@ def main():
     tft = TFT()
     #可以使用print(列表名)打印数据
     chess = tft.get_chess()#获取所有的棋子数据 返回一个列表
-    equip = tft.get_equip()#获取所有的装备数据 返回一个列表
-    job = tft.get_job()#获取所有的职业数据 返回一个列表
-    race = tft.get_race()#获取所有的羁绊数据 返回一个列表
-    tft.get_linelist()
-    #演示推荐列表
-    for i in range(len(tft.dataList)):
-        #一个一个获取攻略数据
-        # 具体的调用字典的哪个key.请自己看函数里面的备注说明.要显示出来就需要自己写一个界面了.饭已做好,要自己拿筷子吃了 举一反三
-        #这里演示的一些数据 还有N多数据,反正都已经获取到了
-        strategy=tft.get_strategy(i)
-        print(strategy)
+    price1s=[]
+    price2s = []
+    price3s = []
+    price4s = []
+    price5s = []
+    for c in chess:
+        if c['price']=='1':
+            price1s.append(c['displayName'])
+        elif c['price']=='2':
+            price2s.append(c['displayName'])
+        elif c['price']=='3':
+            price3s.append(c['displayName'])
+        elif c['price']=='4':
+            price4s.append(c['displayName'])
+        elif c['price']=='5':
+            price5s.append(c['displayName'])
+    print(price1s)
+    print(price2s)
+    print(price3s)
+    print(price4s)
+    print(price5s)
+
+
 if __name__=="__main__":
     main()
 

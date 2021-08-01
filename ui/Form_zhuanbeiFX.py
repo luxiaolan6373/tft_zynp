@@ -86,8 +86,9 @@ class ZhuangGeiFX(QDialog):
 
 
                 for equi in item['equipment_id'].split(','):
-
                     djzb=equipId_get_data(self.equip,equi)
+                    if djzb==None:#排除错误
+                        continue
                     # 将羁绊和职业数据存进容器
                     try:
 
@@ -118,16 +119,19 @@ class ZhuangGeiFX(QDialog):
                     self.xjzb_Vbox[-1].addStretch()
                     self.zbtj_YLH[-1].addLayout(self.xjzb_Vbox[-1])
                     for itemXJ in djzb['formula'].split(','):
-                        xjzb = equipId_get_data(self.equip, itemXJ)
-                        xjzbpath = Path_equip+xjzb['imagePath'].split('/')[-1]
-                        #print('小装备', zbpath)
-                        tp_xjzb = QLabel()
-                        # 让图像适应标签
-                        tp_xjzb.setScaledContents(True)
-                        tp_xjzb.setPixmap(QPixmap(xjzbpath))
-                        tp_xjzb.setMaximumSize(20, 20)
-                        tp_xjzb.setMinimumSize(20, 20)
-                        self.xjzb_Vbox[-1].addWidget(tp_xjzb)
+                        try:
+                            xjzb = equipId_get_data(self.equip, itemXJ)
+                            xjzbpath = Path_equip+xjzb['imagePath'].split('/')[-1]
+                            #print('小装备', zbpath)
+                            tp_xjzb = QLabel()
+                            # 让图像适应标签
+                            tp_xjzb.setScaledContents(True)
+                            tp_xjzb.setPixmap(QPixmap(xjzbpath))
+                            tp_xjzb.setMaximumSize(20, 20)
+                            tp_xjzb.setMinimumSize(20, 20)
+                            self.xjzb_Vbox[-1].addWidget(tp_xjzb)
+                        except:
+                            pass
                     #一个弹簧..用来控制位置的
                     self.xjzb_Vbox[-1].addStretch()
 

@@ -15,12 +15,14 @@ class ui_zb(QDialog):
         self.from_kj=QLabel(parent=self)
         self.from_kj.setContentsMargins(0,0,0,0)
         self.from_kj.setObjectName('from_kj')
-        self.from_kj.setMinimumSize(1000,500)
+        self.from_kj.setMinimumSize(600,600)
         # 创建网格布局
         gbox = QGridLayout()
         zb_list=[]
         #小件装备列表
         for i,item in enumerate(self.equip):
+            if i>8:
+                break
             #把序号存起来
             if item['type'] == '1':
                 zb_list.append(item)

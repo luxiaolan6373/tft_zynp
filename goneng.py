@@ -1,7 +1,8 @@
 # 功能
 import numpy
 from PIL import Image
-from setting import*
+from setting import *
+
 
 def chessName_get_data(chess, hero_name):
     '''
@@ -13,6 +14,8 @@ def chessName_get_data(chess, hero_name):
     for item in chess:
         if hero_name == item['displayName']:
             return item
+
+
 def chessId_get_data(chess, hero_id):
     '''
     根据棋子的id返回棋子数据
@@ -23,6 +26,8 @@ def chessId_get_data(chess, hero_id):
     for item in chess:
         if hero_id == item['chessId']:
             return item
+
+
 def equipId_get_data(equip, equip_id):
     '''
     根据装备的id返回装备数据
@@ -30,10 +35,13 @@ def equipId_get_data(equip, equip_id):
     :param equip_id:
     :return:
     '''
+
     for item in equip:
         if equip_id == item['equipId']:
             return item
-def equip_get_dj_Data(equip,xj1,xj2):
+
+
+def equip_get_dj_Data(equip, xj1, xj2):
     '''
     找到符合合成路线的装备
     :param equip: 装备数据
@@ -43,17 +51,16 @@ def equip_get_dj_Data(equip,xj1,xj2):
     '''
 
     for item in equip:
-        #找到合成符合的大件装备
-        if item['type']=='2':
+        # 找到合成符合的大件装备
+        if item['type'] == '2':
             formula = item['formula'].split(',')
 
-            if xj1==xj2:
-                if xj1 == formula[0] and xj2 ==  formula[1]:
+            if xj1 == xj2:
+                if xj1 == formula[0] and xj2 == formula[1]:
                     return item
             else:
                 if xj1 in formula and xj2 in formula:
                     return item
-
 
 
 def jobId_get_data(job, job_id):
@@ -66,6 +73,8 @@ def jobId_get_data(job, job_id):
     for item in job:
         if job_id == item['jobId']:
             return item
+
+
 def raceId_get_data(race, race_id):
     '''
     根据羁绊的id返回羁绊数据
@@ -76,6 +85,8 @@ def raceId_get_data(race, race_id):
     for item in race:
         if race_id == item['raceId']:
             return item
+
+
 def jobName_get_data(job, job_name):
     '''
     根据职业的name返回职业数据
@@ -86,6 +97,8 @@ def jobName_get_data(job, job_name):
     for item in job:
         if job_name == item['name']:
             return item
+
+
 def raceName_get_data(race, race_name):
     '''
     根据羁绊的name返回羁绊数据
@@ -96,6 +109,8 @@ def raceName_get_data(race, race_name):
     for item in race:
         if race_name == item['name']:
             return item
+
+
 def CreateNewImage(current_filename, new_filename, new_color):
     '''
     将指定图片转换颜色
@@ -111,8 +126,9 @@ def CreateNewImage(current_filename, new_filename, new_color):
     new_image_values = NewSolidImage(image_values, new_color)
     new_image = Image.fromarray(new_image_values)
 
-
     new_image.save(new_filename)
+
+
 def NewSolidImage(rgba_array, new_color):
     '''
     将图片转换成特定颜色,透明除外!
@@ -138,7 +154,9 @@ def NewSolidImage(rgba_array, new_color):
                 rgba_array[row][col] = new_pixel
 
     return rgba_array
-def tanChudataForm(chessData,job,race):
+
+
+def tanChudataForm(chessData, job, race):
     '''
     返回英雄详细资料的text
     :param chessData:
@@ -156,7 +174,7 @@ def tanChudataForm(chessData,job,race):
             except:
                 pass
     except:
-            pass
+        pass
     try:
         for item in chessData['raceIds'].split(','):
             try:
@@ -175,23 +193,34 @@ def tanChudataForm(chessData,job,race):
                         <p><b>{chessData['skillIntroduce']}</b></p>
                         </span>
                         '''
-def tanChu_EquipData(equip,quipData):
+
+
+def tanChu_EquipData(equip, quipData):
     '''
     返回装备详细资料的text
     :param quipData:
     :return:
     '''
     # ----------------------
-    zb_xj=[]
-    for item in quipData['formula'].split(','):
-        img=Path_equip+equipId_get_data(equip, item)['imagePath'].split('/')[-1]
-        zb_xj.append(img)
-    return f'''
-                        <h2 style="color:#FFFFFF;text-align:center;">{quipData['name']}</h2><br>
-                        <img src='{zb_xj[0]}' > 
-                        <img src='{zb_xj[1]}' ><b>{quipData['effect']}</b>
-                        '''
-def Hero_filter(chess,price='0',jobId='0',raceId='0',keyword=''):
+    zb_xj = []
+    try:
+        for item in quipData['formula'].split(','):
+            img = Path_equip + equipId_get_data(equip, item)['imagePath'].split('/')[-1]
+            zb_xj.append(img)
+
+        return f'''
+                            <h2 style="color:#FFFFFF;text-align:center;">{quipData['name']}</h2><br>
+                            <img src='{zb_xj[0]}' > 
+                            <img src='{zb_xj[1]}' ><b>{quipData['effect']}</b>
+                            '''
+    except:
+        return f'''
+                            <h2 style="color:#FFFFFF;text-align:center;">{quipData['name']}</h2><br>
+                            <b>{quipData['effect']}</b>
+                            '''
+
+
+def Hero_filter(chess, price='0', jobId='0', raceId='0', keyword=''):
     '''
     根据条件筛选数据 分析chess数据然后绘制列表,注意所有的参数必须为str字符串 '0'表示不考虑这个条件
     :param chess: 字典数据
@@ -213,8 +242,7 @@ def Hero_filter(chess,price='0',jobId='0',raceId='0',keyword=''):
         if keyword != '':
             tj_list.append('''keyword in x['displayName'] or keyword in x['title'] ''')
         length = len(tj_list)
-        if length==0:
-
+        if length == 0:
             return chess
         tj = ''
         # 将需要用到的条件都拼接起来,骚操作
@@ -232,7 +260,9 @@ def Hero_filter(chess,price='0',jobId='0',raceId='0',keyword=''):
     except:
 
         return chess
-def job_get_background_sf(job,job_id,s,sftx=False):
+
+
+def job_get_background_sf(job, job_id, s, sftx=False):
     '''
     返回职业背景图片地址,以及羁绊图标'
     :param job: job数据
@@ -242,50 +272,52 @@ def job_get_background_sf(job,job_id,s,sftx=False):
     :return:返回3个数据 背景图,图标,job数据  返回None表示没达成
     '''
     try:
-        itemJob=jobId_get_data(job, job_id)
+        itemJob = jobId_get_data(job, job_id)
         level = len(itemJob['level'])
-        #如果有天选
-        if sftx==True :
-            #直接返回最华丽的背景图
-            return Path_img+'bg4.png', Path_job2 + itemJob['alias'],itemJob
-        else :
-            #将key取出来
-            sss =[]
+        # 如果有天选
+        if sftx == True:
+            # 直接返回最华丽的背景图
+            return Path_img + 'bg4.png', Path_job2 + itemJob['alias'], itemJob
+        else:
+            # 将key取出来
+            sss = []
             for item in itemJob['level'].keys():
                 sss.append(item)
-            if level==1 :#只分1个等级时
-                return Path_img+'bg3.png',Path_job+itemJob['alias'],itemJob
-            elif level==2:#分2个阶段时
-                if s>=int(sss[0]) and s<int(sss[1]):
-                    return Path_img+'bg2.png',Path_job+itemJob['alias'],itemJob
-                elif s>=int(sss[1]) :
-                    return Path_img+'bg4.png',Path_job2+itemJob['alias'],itemJob
+            if level == 1:  # 只分1个等级时
+                return Path_img + 'bg3.png', Path_job + itemJob['alias'], itemJob
+            elif level == 2:  # 分2个阶段时
+                if s >= int(sss[0]) and s < int(sss[1]):
+                    return Path_img + 'bg2.png', Path_job + itemJob['alias'], itemJob
+                elif s >= int(sss[1]):
+                    return Path_img + 'bg4.png', Path_job2 + itemJob['alias'], itemJob
                 else:
                     return None
-            elif level==3:#分3个阶段时
+            elif level == 3:  # 分3个阶段时
                 if s >= int(sss[0]) and s < int(sss[1]):
-                    return Path_img+'bg2.png',Path_job+itemJob['alias'],itemJob
+                    return Path_img + 'bg2.png', Path_job + itemJob['alias'], itemJob
                 elif s >= int(sss[1]) and s < int(sss[2]):
-                    return Path_img+'bg3.png',Path_job+itemJob['alias'],itemJob
+                    return Path_img + 'bg3.png', Path_job + itemJob['alias'], itemJob
                 elif s >= int(sss[2]):
-                    return Path_img+'bg4.png',Path_job2+itemJob['alias'],itemJob
+                    return Path_img + 'bg4.png', Path_job2 + itemJob['alias'], itemJob
                 else:
                     return None
 
-            elif level==4:#分4个阶段时
+            elif level == 4:  # 分4个阶段时
                 if s >= int(sss[0]) and s < int(sss[1]):
-                    return Path_img+'bg2.png', Path_job + itemJob['alias'],itemJob
+                    return Path_img + 'bg2.png', Path_job + itemJob['alias'], itemJob
                 elif s >= int(sss[1]) and s < int(sss[2]):
-                    return Path_img+'bg1.png', Path_job + itemJob['alias'],itemJob
+                    return Path_img + 'bg1.png', Path_job + itemJob['alias'], itemJob
                 elif s >= int(sss[2]) and s < int(sss[3]):
-                    return Path_img+'bg3.png', Path_job + itemJob['alias'],itemJob
+                    return Path_img + 'bg3.png', Path_job + itemJob['alias'], itemJob
                 elif s >= int(sss[3]):
-                    return Path_img+'bg4.png', Path_job2 + itemJob['alias'],itemJob
+                    return Path_img + 'bg4.png', Path_job2 + itemJob['alias'], itemJob
                 else:
                     return None
     except:
         return None
-def race_get_background_sf(race,race_id,s,sftx=False):
+
+
+def race_get_background_sf(race, race_id, s, sftx=False):
     '''
     返回羁绊背景图片地址,以及羁绊图标'
     :param race: race数据
@@ -295,47 +327,47 @@ def race_get_background_sf(race,race_id,s,sftx=False):
     :return:返回3个数据 背景图,图标,race数据  返回None表示没达成
     '''
     try:
-        itemRace=raceId_get_data(race, race_id)
+        itemRace = raceId_get_data(race, race_id)
         level = len(itemRace['level'])
-        #如果有天选
+        # 如果有天选
         # 将key取出来
         sss = []
         for item in itemRace['level'].keys():
             sss.append(item)
-        if sftx==True :
-            #直接返回最华丽的背景图
+        if sftx == True:
+            # 直接返回最华丽的背景图
             if s >= int(sss[0]):
-                return Path_img+'bg4.png', Path_race2 + itemRace['alias'],itemRace
-        else :
-            if level==1 :#只分1个等级时
-                if s >= int(sss[0]) :
-                    return Path_img+'bg3.png',Path_race+itemRace['alias'],itemRace
-            elif level==2:#分2个阶段时
-                if s>=int(sss[0]) and s<int(sss[1]):
-                    return Path_img+'bg2.png',Path_race+itemRace['alias'],itemRace
-                elif s>=int(sss[1]) :
-                    return Path_img+'bg3.png',Path_race+itemRace['alias'],itemRace
+                return Path_img + 'bg4.png', Path_race2 + itemRace['alias'], itemRace
+        else:
+            if level == 1:  # 只分1个等级时
+                if s >= int(sss[0]):
+                    return Path_img + 'bg3.png', Path_race + itemRace['alias'], itemRace
+            elif level == 2:  # 分2个阶段时
+                if s >= int(sss[0]) and s < int(sss[1]):
+                    return Path_img + 'bg2.png', Path_race + itemRace['alias'], itemRace
+                elif s >= int(sss[1]):
+                    return Path_img + 'bg3.png', Path_race + itemRace['alias'], itemRace
                 else:
                     return None
-            elif level==3:#分3个阶段时
+            elif level == 3:  # 分3个阶段时
                 if s >= int(sss[0]) and s < int(sss[1]):
-                    return Path_img+'bg2.png',Path_race+itemRace['alias'],itemRace
+                    return Path_img + 'bg2.png', Path_race + itemRace['alias'], itemRace
                 elif s >= int(sss[1]) and s < int(sss[2]):
-                    return Path_img+'bg3.png',Path_race+itemRace['alias'],itemRace
+                    return Path_img + 'bg3.png', Path_race + itemRace['alias'], itemRace
                 elif s >= int(sss[2]):
-                    return Path_img+'bg4.png',Path_race2+itemRace['alias'],itemRace
+                    return Path_img + 'bg4.png', Path_race2 + itemRace['alias'], itemRace
                 else:
                     return None
 
-            elif level==4:#分4个阶段时
+            elif level == 4:  # 分4个阶段时
                 if s >= int(sss[0]) and s < int(sss[1]):
-                    return Path_img+'bg2.png', Path_race + itemRace['alias'],itemRace
+                    return Path_img + 'bg2.png', Path_race + itemRace['alias'], itemRace
                 elif s >= int(sss[1]) and s < int(sss[2]):
-                    return Path_img+'bg1.png', Path_race + itemRace['alias'],itemRace
+                    return Path_img + 'bg1.png', Path_race + itemRace['alias'], itemRace
                 elif s >= int(sss[2]) and s < int(sss[3]):
-                    return Path_img+'bg3.png', Path_race + itemRace['alias'],itemRace
+                    return Path_img + 'bg3.png', Path_race + itemRace['alias'], itemRace
                 elif s >= int(sss[3]):
-                    return Path_img+'bg4.png', Path_race2 + itemRace['alias'],itemRace
+                    return Path_img + 'bg4.png', Path_race2 + itemRace['alias'], itemRace
                 else:
                     return None
     except:

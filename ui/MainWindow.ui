@@ -146,6 +146,9 @@ QPushButton:hover {
     </item>
     <item>
      <widget class="QPushButton" name="bt_ds">
+      <property name="toolTip">
+       <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;如果出现异常加QQ3603799192或者论坛留言&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
       <property name="text">
        <string>交流</string>
       </property>
